@@ -1,0 +1,122 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
+    font-family:'Courier New', Courier, monospace;
+}
+
+.map{
+    width: 100%;
+    background-color:rgb(82, 78, 78);
+    height: 100%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color:rgb(82, 78, 78);
+    height: 100%;
+    gap: 30px;
+
+    & h1{
+        font-size: 60px;
+        height: 3vw;
+    }
+
+    & input{
+        font-size: 15px;
+        height: 25px;
+        border-radius: 5px;
+    }
+
+    & button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+        font-weight: bold;
+        width: 150px;
+        height: 40px;
+        border-radius: 5px;
+        border: 0;
+    }
+}
+
+.scoreboard{
+    display: flex;
+    justify-content:space-between;
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    width: 32vw;
+    height: 32vw;
+    background-color: rgb(255, 255, 255);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+td {
+    color: #555;
+    cursor: pointer;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e9e9e9;
+}
+
+footer{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4vh;
+    background-color: rgba(0, 0, 0, 0.171);
+    color: white;
+    
+    & p{
+        font-size: 16px;
+        height: 16px;
+    }
+}
+
+.hud-game{
+    display: none;
+    padding: 20px;
+}
+
+.player{
+    position: absolute;
+    top:0;
+    left: 0;
+    border-radius: 50%;
+}
