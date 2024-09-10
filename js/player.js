@@ -107,32 +107,37 @@ class Player{
         this.element.style.top = `${this.y}px`
     }
 
-    initEvents(){
-        const p = this
-
+    initEvents() {
+        const p = this;
+    
+        const keyMapDown = {
+            'a': () => { p.keyboard.left = true; /* movimentar para esquerda */ },
+            'w': () => { p.keyboard.up = true; /* movimentar para cima */ },
+            's': () => { p.keyboard.down = true; /* movimentar para baixo */ },
+            'd': () => { p.keyboard.right = true; /* movimentar para direita */ },
+            ' ': () => { p.shooting = true; }
+        };
+    
         document.body.addEventListener('keydown', (event) => {
+            const key = event.key.toLowerCase();
+            if (keyMapDown[key]) {
+                keyMapDown[key]();
+            }
+        });
 
-            const key = event.key.toLowerCase()
+        const keyMapUp = {
+            'a': () => { p.keyboard.left = false; /* movimentar para esquerda */ },
+            'w': () => { p.keyboard.up = false; /* movimentar para cima */ },
+            's': () => { p.keyboard.down = false; /* movimentar para baixo */ },
+            'd': () => { p.keyboard.right = false; /* movimentar para direita */ },
+            ' ': () => { p.shooting = false; }
+        };
 
-            if(key === 'a'){ p.keyboard.left = true/*movimentar para esquerda */ }
-            if(key === 'w'){ p.keyboard.up = true/*movimentar para cima */ }
-            if(key === 's'){ p.keyboard.down = true/*movimentar para baixo */ }
-            if(key === 'd'){ p.keyboard.right = true/*movimentar para direita */ }
-        
-            if(key === ' '){ p.shooting = true}
-        })
-
-        
         document.body.addEventListener('keyup', (event) => {
-
-            const key = event.key.toLowerCase()
-            
-            if(key === 'a'){ p.keyboard.left = false/*movimentar para esquerda */ }
-            if(key === 'w'){ p.keyboard.up = false/*movimentar para cima */ }
-            if(key === 's'){ p.keyboard.down = false/*movimentar para baixo */ }
-            if(key === 'd'){ p.keyboard.right = false/*movimentar para direita */ }
-
-            if(key === ' '){ p.shooting = false}
-        }) 
+            const key = event.key.toLowerCase();
+            if (keyMapUp[key]) {
+                keyMapUp[key]();
+            }
+        });
     }
 }

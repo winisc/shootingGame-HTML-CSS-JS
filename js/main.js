@@ -4,7 +4,7 @@ const player = new Player({
     size: 80, //tamanho
     step: 7, //"velocidade"
     color: 'none', //cor
-    image: 'player.png' //sprite
+    image: '/assets/player.png' //sprite
 })
 
 const game = new Game()
