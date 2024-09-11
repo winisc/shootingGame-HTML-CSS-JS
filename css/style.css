@@ -111,7 +111,13 @@ footer{
 
 .hud-game{
     display: none;
+    justify-content: space-between;
     padding: 20px;
+    color: #f9f9f9;
+
+    & p{
+        font-size: 30px;
+    }
 }
 
 .player{

@@ -16,8 +16,11 @@ class Player{
         this.element = this.createElement()
         this.initEvents() //método para instanciar eventos
         this.map = document.querySelector('.map')
+        this.cW = window.innerWidth
+        this.cH = window.innerHeight
 
         this.shooting = false
+        this.leftPositionBullet = 0
     }
 
     createElement(){ //método para definir as caracteristicas do Player
@@ -56,7 +59,6 @@ class Player{
 
     shootingBullet(){
         if(this.shooting) {
-            console.log('true')
             this.elementBullet = this.createBullet()
             this.map.insertAdjacentElement('beforeend', this.elementBullet)
         }
@@ -67,17 +69,19 @@ class Player{
 
         for(let i = 0; i < bullets.length; i++){
             if(bullets[i]){
+                this.leftPositionBullet = bullets[i].offsetLeft
+                this.leftPositionBullet += 15  //velocidade da bala
+                bullets[i].style.left = `${this.leftPositionBullet}px`
                 this.deleteBullet(bullets[i])
-                let leftPositionBullet = bullets[i].offsetLeft
-                leftPositionBullet += 15  //velocidade da bala
-                bullets[i].style.left = `${leftPositionBullet}px`
             }
         }
     }
 
-    async deleteBullet(element){
-        await this.awaitForTime(2)
-        element.remove()
+    deleteBullet(element){
+        if((this.leftPositionBullet + 10) > this.cW) {
+            console.log("XQDL")
+            element.remove()
+        }
     }
 
     move(){
@@ -88,14 +92,12 @@ class Player{
     }
 
     collisionWall(){
-        const cW = window.innerWidth
-        const cH = window.innerHeight
 
         if(this.x < 0) this.x = 0
         if(this.y < 0) this.y = 0
 
-        if((this.x + this.size) > cW) this.x = cW - this.size
-        if((this.y + this.size) > cH) this.y = cH - this.size
+        if((this.x + this.size) > this.cW) this.x = this.cW - this.size
+        if((this.y + this.size) > this.cH) this.y = this.cH - this.size
     }
 
     awaitForTime(seconds) {
