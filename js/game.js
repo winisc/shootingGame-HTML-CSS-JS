@@ -1,6 +1,6 @@
 class Game{
 
-    constructor(){
+    constructor(initial){
         this.map = document.querySelector('.map')
         this.instances = []
     }

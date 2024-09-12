@@ -16,7 +16,8 @@ class Enemy{
         const enemy = document.createElement('img') //cria um elemento 'img' em htlm
 
         enemy.src = `${this.image}` //define uma imagem para o objeto
-        enemy.classList.add('player') //noemia uma classe em css para o objeto
+        enemy.id = "target"
+        enemy.classList.add('enemy') //noemia uma classe em css para o objeto
         enemy.style.width= `${this.size}px` //define a largura do objeto
         enemy.style.height= `${this.size}px` //define a altura do objeto
         enemy.style.transform = `rotate(${this.rotate}deg)`;

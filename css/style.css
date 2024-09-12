@@ -110,14 +110,16 @@ footer{
 }
 
 .hud-game{
+    position: relative;
     display: none;
     justify-content: space-between;
     padding: 20px;
     color: #f9f9f9;
+    z-index: 2;
+}
 
-    & p{
-        font-size: 30px;
-    }
+.score{
+    font-size: 30px;
 }
 
 .player{
@@ -125,4 +127,16 @@ footer{
     top:0;
     left: 0;
     border-radius: 50%;
+    z-index: 1;
+}
+
+.enemy{
+    position: absolute;
+    top:0;
+    left: 0;
+    border-radius: 50%;
+}
+
+.ui{
+    display: none;
 }

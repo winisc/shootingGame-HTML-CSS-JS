@@ -20,7 +20,10 @@ class Player{
         this.cH = window.innerHeight
 
         this.shooting = false
+        this.atirar = false
         this.leftPositionBullet = 0
+
+        this.value = 0
     }
 
     createElement(){ //método para definir as caracteristicas do Player
@@ -41,6 +44,7 @@ class Player{
         this.collisionWall() //chama a colisão do Player
         this.draw() //"desenha" o Player de acordo com a sua posicao
         this.moveBullet()
+        this.atualizarHud()
     }
 
     createBullet(){
@@ -58,30 +62,65 @@ class Player{
     }
 
     shootingBullet(){
-        if(this.shooting) {
+        if(this.shooting && !this.atirar) {
             this.elementBullet = this.createBullet()
             this.map.insertAdjacentElement('beforeend', this.elementBullet)
+            this.delayTiro()
         }
     }
 
     moveBullet(){
         const bullets = document.querySelectorAll('.bullet')
+        const target = document.querySelectorAll('.enemy')
 
         for(let i = 0; i < bullets.length; i++){
             if(bullets[i]){
                 this.leftPositionBullet = bullets[i].offsetLeft
                 this.leftPositionBullet += 15  //velocidade da bala
                 bullets[i].style.left = `${this.leftPositionBullet}px`
-                this.deleteBullet(bullets[i])
+                this.deleteBulletLimits(bullets[i])
+            }
+
+            for(let j = 0; j < target.length; j++){
+                this.colliderTarget(bullets[i], target[j])
             }
         }
     }
 
-    deleteBullet(element){
+    colliderTarget(element, target){
+        if (this.detectCollision(element, target)) {
+            this.value ++
+            this.deleteBullet(element)
+            this.deleteBullet(target)
+        }
+    }
+
+    atualizarHud(){
+        const scoreHud = document.querySelector('.score')
+
+        scoreHud.innerHTML = `SCORE: ${this.value}`
+    }
+
+    deleteBulletLimits(element){
         if((this.leftPositionBullet + 10) > this.cW) {
-            console.log("XQDL")
             element.remove()
         }
+    }
+
+    deleteBullet(element){
+        element.remove()
+    }
+
+    detectCollision(bullet, target) {
+        const bulletRect = bullet.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+    
+        return !(
+            bulletRect.top > targetRect.bottom ||
+            bulletRect.bottom < targetRect.top ||
+            bulletRect.left > targetRect.right ||
+            bulletRect.right < targetRect.left
+        );
     }
 
     move(){
@@ -101,7 +140,13 @@ class Player{
     }
 
     awaitForTime(seconds) {
-        return new Promise(resolve => setTimeout(resolve,(seconds*1000))) 
+        return new Promise(resolve => setTimeout(resolve,(seconds*1000)))
+    }
+
+    async delayTiro(){
+        this.atirar = true
+        await this.awaitForTime(.5)
+        this.atirar = false
     }
 
     draw(){
