@@ -1,10 +1,12 @@
+getUser()
+
 const player = new Player({
     x: 0, //position x
     y: window.innerHeight/2, //position y
     size: 80, //tamanho
     step: 10, //"velocidade"
     color: 'none', //cor
-    image: '/FrontEnd/assets/player.png', //sprite
+    image: '/assets/player.png', //sprite
 })
 
 const enemy = new Enemy({
@@ -14,44 +16,50 @@ const enemy = new Enemy({
     size: 80, //tamanho
     step: 2, //"velocidade"
     color: 'none', //cor
-    image: '/FrontEnd/assets/enemy.png' //sprite
+    image: '/assets/enemy.png' //sprite
 })
 
 const game = new Game()
 
-async function startButton(){
+async function startButton() {
+    const username = verificarUserName();
 
-    if(verificarUserName() != ""){
+    if (username !== "") {
+        showLoadingPopup();
+        // Enviar o nome de usuário ao servidor
+        await postUser(username, 0);
 
-        postUser(verificarUserName(), 0)
+        const response = duplicateUser()
 
-        showLoadingPopup(1)
-        await awaitForTime(1)
-        if(duplicateUser() === 2){
-            showPopup("ERROR")
-            return
+        if (response === "Erro") {
+            hideLoadingPopup()
+            showPopup("ERROR");
+            return;
         }
 
-        if(duplicateUser() === 0){
+        if (response === "Disponivel") {
+            hideLoadingPopup()
 
-            showPopup("Success!", "success")
+            showPopup("Success!", "success");
 
-            await awaitForTime(.8)
-            document.querySelector('form').style.display = 'none'
-            document.querySelector('.hud-game').style.display = 'flex'
+            document.querySelector('form').style.display = 'none';
+            document.querySelector('.hud-game').style.display = 'flex';
 
-            game.add(player)
-            game.add(enemy)
 
-            return
+            timer(10)
+
+            game.add(player);
+            game.add(enemy);
+
+            return;
         }
 
-        showPopup("Nome de usuário já utilizado!", "error")
-        return
-
+        hideLoadingPopup()
+        showPopup("Nome de usuário já utilizado!", "error");
+        return;
     }
-    showPopup("Digite um nome de usuário válido!", "error")
 
+    showPopup("Digite um nome de usuário válido!", "error");
 }
 
 function awaitForTime(seconds) {
@@ -84,17 +92,50 @@ function showPopup(message, check) {
     }, 3000);
 }
 
-function showLoadingPopup(timer) {
+function showLoadingPopup() {
     const popup = document.getElementById('loadingPopup');
-    
     popup.classList.add('show');
-
-    setTimeout(() => {
-        popup.classList.remove('show');
-    }, timer*1000);
 }
 
+function hideLoadingPopup() {
+    const popup = document.getElementById('loadingPopup');
+    popup.classList.remove('show');
+}
+
+let timerGame = false
+
+function timer(seconds) {
+    let timeLeft = seconds;
+    const timerDisplay = document.querySelector(".timer");
+
+    // Exibe o tempo restante a cada segundo
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `TEMPO: ${timeLeft}`;
+
+        // Quando o contador chega a zero, para o intervalo
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+        }
+    }, 1000);
+
+    // Finaliza o jogo após 10 segundos
+    setTimeout(() => {
+        player.finishGame();
+        console.log("FINALIZOU");
+    }, seconds*1000);
+
+    console.log("INICIOU");
+}
+
+
+function acabouGame(){
+    return timerGame
+}
 
 requestAnimationFrame((t) => game.update(game))
 
 window.verificarUserName = verificarUserName
+window.acabouGame = acabouGame
+window.showLoadingPopup = showLoadingPopup
+window.hideLoadingPopup = hideLoadingPopup

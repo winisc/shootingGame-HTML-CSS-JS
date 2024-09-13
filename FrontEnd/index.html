@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/FrontEnd/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
@@ -12,13 +12,14 @@
 </head>
 <body>
     <div class="map">
+        
+        <div id="loadingPopup" class="loading-popup">
+            <p>Carregando...</p>
+        </div>
 
         <div class="background"></div>
             <form>
                 <div id="popup" class="popup hidden">Digite um nome de usuário válido!</div>
-                <div id="loadingPopup" class="loading-popup">
-                    <p>Carregando...</p>
-                </div>
 
                 <h1>SHOOTING GAME</h1>
                 <input placeholder="username" type="text" maxlength="10" id="input-username"></input>
@@ -34,9 +35,9 @@
                         </thead>
                         <tbody id="score" class="tbody">
                             <tr>
-                                <td>1</td>
-                                <td>User</td>
-                                <td>0</td>
+                                <td>Carregando...</td>
+                                <td>Carregando...</td>
+                                <td>Carregando...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -45,16 +46,17 @@
 
             <div class="hud-game">
                 <p class = "score">SCORE: 100</p>
+                <p class = "timer">TIMER: 10</p>
                 <div class="fps">fps: <span id="fps"></span></div>
             </div>
     </div>
    
-    <script src="/FrontEnd/js/bd.js"></script>
-    <script src="/FrontEnd/js/showFps.js"></script>
-    <script src="/FrontEnd/js/enemy.js"></script>
-    <script src="/FrontEnd/js/player.js"></script>
-    <script src="/FrontEnd/js/game.js"></script>
-    <script src="/FrontEnd/js/main.js"></script>
+    <script src="/js/bd.js"></script>
+    <script src="/js/showFps.js"></script>
+    <script src="/js/enemy.js"></script>
+    <script src="/js/player.js"></script>
+    <script src="/js/game.js"></script>
+    <script src="/js/main.js"></script>
 
 </body>
 </html>

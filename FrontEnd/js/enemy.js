@@ -9,6 +9,7 @@ class Enemy{
         this.color = initial.color //define um valor para manipular a cor do Player
         this.image = initial.image //define um valor para manipular a sprite do Player
         this.element = this.createElementNull()
+        this.enemy = true
         this.map = document.querySelector('.map')
 
         this.sexo = true
@@ -59,8 +60,18 @@ class Enemy{
     }
     
     update(){ //método para implenmentar funções que serão constantemente executadas
-        this.move() //chama a movimentacao do Player
-        this.gerarTiming()
+        if(this.enemy){
+            this.move() //chama a movimentacao do Player
+            this.gerarTiming()
+        }
+
+        this.finishGame()
+    }
+
+    finishGame(){
+        if(acabouGame()){
+            this.enemy = false
+        }
     }
 
     gerarTiming(){

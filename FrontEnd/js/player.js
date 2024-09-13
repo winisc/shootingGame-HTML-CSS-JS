@@ -14,6 +14,7 @@ class Player{
             down: false
         }
         this.element = this.createElement()
+        this.player = true
         this.initEvents() //método para instanciar eventos
         this.map = document.querySelector('.map')
         this.cW = window.innerWidth
@@ -39,25 +40,33 @@ class Player{
     } 
     
     update(){ //método para implenmentar funções que serão constantemente executadas
-        this.shootingBullet()
-        this.move() //chama a movimentacao do Player
-        this.collisionWall() //chama a colisão do Player
-        this.draw() //"desenha" o Player de acordo com a sua posicao
-        this.moveBullet()
-        this.atualizarHud()
-        this.finishGame()
+        if(this.player){
+            this.shootingBullet()
+            this.move() //chama a movimentacao do Player
+            this.collisionWall() //chama a colisão do Player
+            this.draw() //"desenha" o Player de acordo com a sua posicao
+            this.moveBullet()
+            this.atualizarHud()
+        }
+
     }
 
-    finishGame(){
-        let valueNow = 0
-        if(this.value === 10){
-            document.querySelector('form').style.display = 'flex'
-            document.querySelector('.hud-game').style.display = 'none'
-            valueNow = this.value
-            updateUser(verificarUserName(), valueNow)
-            this.value = 0
-            window.location.reload();
-        }
+    async finishGame(){
+        this.player = false
+        console.log("iniciando up de score")
+        await updateUser(verificarUserName(), this.value)
+        console.log("up de score concluido")
+        this.hudInGameClean()
+        showLoadingPopup()
+        console.log("iniciando requisicao get")
+        await getUser()
+        console.log("requisicao get concluida")
+        hideLoadingPopup()
+        window.location.reload();
+    }
+
+    hudInGameClean(){
+        document.querySelector('.hud-game').style.display = 'none'
     }
 
     createBullet(){
@@ -103,8 +112,8 @@ class Player{
     colliderTarget(element, target){
         if (this.detectCollision(element, target)) {
             this.value ++
-            this.deleteBullet(element)
-            this.deleteBullet(target)
+            this.deleteObject(element)
+            this.deleteObject(target)
         }
     }
 
@@ -120,7 +129,7 @@ class Player{
         }
     }
 
-    deleteBullet(element){
+    deleteObject(element){
         element.remove()
     }
 

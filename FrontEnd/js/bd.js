@@ -13,57 +13,64 @@ function useState(initialValue) {
 }
 
 const [val, setVal] = useState([]);
-let state = 2
+let state = null
 
-fetch('http://localhost:8081/score')
-    .then(res => res.json())
-    .then(data => {
+async function getUser() {
+    await fetch('https://api-production-1b3c.up.railway.app/score')
+        .then(res => res.json())
+        .then(data => {
 
-        setVal(data);
+            setVal(data);
 
-        let tabelaScoreBoard = data.slice(0, 10).map((item, index) =>
-            `<tr>
-                <td>${index + 1}</td>
-                <td>${item.username}</td>
-                <td>${item.score}</td>
-            </tr>`
+            let tabelaScoreBoard = data.slice(0, 10).map((item, index) =>
+                `<tr>
+                    <td>${index + 1}</td>
+                    <td>${item.username}</td>
+                    <td>${item.score}</td>
+                </tr>`
 
-        ).join('');
-        
-        document.getElementById("score").innerHTML = tabelaScoreBoard;
+            ).join('');
+            
+            document.getElementById("score").innerHTML = tabelaScoreBoard;
 
-    })
-    .catch(err => console.error('Erro ao buscar dados:', err));
-
-function postUser(username, score){
-    fetch('http://localhost:8081/score', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: username,
-            score: score
         })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.code === "ER_DUP_ENTRY"){ 
-            state = 1
+        .catch(err => console.error('Erro ao buscar dados:', err));
+    
+    }
+
+    async function postUser(username, score) {
+       await fetch('https://api-production-1b3c.up.railway.app/score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                score: score
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+            
+            if (data.code && data.code === "ER_DUP_ENTRY") {
+                state = "Duplicado";
+                return
+            }
+
+            state = "Disponivel";
             return
-        }
 
-        state = 0
-        return
-        
-    })
-    .catch((error) => {
-        console.error('Erro:', error);
-    });
-}
+        })
+        .catch((error) => {
+            console.error('Erro ao enviar dados:', error);
+            state = "Erro"
+        });
 
-function updateUser(username, score) {
-    fetch(`http://localhost:8081/score/${username}`, {
+    }
+
+async function updateUser(username, score) {
+    await fetch(`https://api-production-1b3c.up.railway.app/score/${username}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -85,7 +92,7 @@ function duplicateUser(){
     return state
 }
 
-
+window.getUser = getUser
 window.postUser = postUser;
 window.updateUser = updateUser;
 window.duplicateUser = duplicateUser

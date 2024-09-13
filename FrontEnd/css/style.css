@@ -146,11 +146,12 @@ td {
     z-index: 2;
 }
 
-.score{
+.score, .timer{
     font-size: 30px;
 }
 
 .player{
+    display: flex;
     position: absolute;
     top:0;
     left: 0;
@@ -159,6 +160,7 @@ td {
 }
 
 .enemy{
+    display: flex;
     position: absolute;
     top:0;
     left: 0;
