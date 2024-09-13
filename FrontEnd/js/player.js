@@ -45,17 +45,18 @@ class Player{
         this.draw() //"desenha" o Player de acordo com a sua posicao
         this.moveBullet()
         this.atualizarHud()
-        this.winGame()
+        this.finishGame()
     }
 
-    winGame(){
+    finishGame(){
         let valueNow = 0
-        if(this.value === 5){
+        if(this.value === 10){
             document.querySelector('form').style.display = 'flex'
             document.querySelector('.hud-game').style.display = 'none'
             valueNow = this.value
-            document.getElementById('score-save').innerHTML = `${valueNow}`
+            updateUser(verificarUserName(), valueNow)
             this.value = 0
+            window.location.reload();
         }
     }
 

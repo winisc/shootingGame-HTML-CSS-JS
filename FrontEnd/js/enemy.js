@@ -39,7 +39,7 @@ class Enemy{
 
         if(this.randomIntFromInterval(1, 3) === 1){
             enemy.style.left = `${this.x}px`
-            enemy.style.top = `${this.y - this.size}px`
+            enemy.style.top = `${this.y - (this.size + 60)}px`
         }
         else if(this.randomIntFromInterval(1, 3) === 2){
             enemy.style.left = `${this.x}px`

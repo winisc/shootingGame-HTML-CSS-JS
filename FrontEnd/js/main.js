@@ -19,23 +19,82 @@ const enemy = new Enemy({
 
 const game = new Game()
 
-function startButton(){
+async function startButton(){
 
-    verificarUserName()
+    if(verificarUserName() != ""){
 
-    document.querySelector('form').style.display = 'none'
-    document.querySelector('.hud-game').style.display = 'flex'
+        postUser(verificarUserName(), 0)
 
-    game.add(player)
-    game.add(enemy)
+        showLoadingPopup(1)
+        await awaitForTime(1)
+        if(duplicateUser() === 2){
+            showPopup("ERROR")
+            return
+        }
 
+        if(duplicateUser() === 0){
+
+            showPopup("Success!", "success")
+
+            await awaitForTime(.8)
+            document.querySelector('form').style.display = 'none'
+            document.querySelector('.hud-game').style.display = 'flex'
+
+            game.add(player)
+            game.add(enemy)
+
+            return
+        }
+
+        showPopup("Nome de usuário já utilizado!", "error")
+        return
+
+    }
+    showPopup("Digite um nome de usuário válido!", "error")
+
+}
+
+function awaitForTime(seconds) {
+    return new Promise(resolve => setTimeout(resolve,(seconds*1000)))
 }
 
 function verificarUserName(){
     const user = document.getElementById('input-username').value
-    console.log(user)
+    return user
+}
+
+function showPopup(message, check) {
+    const popup = document.getElementById('popup');
+    if(check === "success"){
+        popup.style.backgroundColor = "#36f4463a"
+    }
+    else{
+        popup.style.backgroundColor = "#f443363a";
+    }
+
+    popup.innerHTML = message
+
+    popup.classList.remove('hidden');
+    popup.classList.add('show');
+
+    setTimeout(() => {
+        popup.classList.remove('show');
+        popup.classList.add('hidden');
+        popup.style.backgroundColor = "#f443363a";
+    }, 3000);
+}
+
+function showLoadingPopup(timer) {
+    const popup = document.getElementById('loadingPopup');
+    
+    popup.classList.add('show');
+
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, timer*1000);
 }
 
 
 requestAnimationFrame((t) => game.update(game))
 
+window.verificarUserName = verificarUserName
